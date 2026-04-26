@@ -78,7 +78,7 @@ export default function Navbar() {
       >
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`flex items-center justify-between transition-all duration-500 ${
-            isScrolled ? 'h-[70px]' : 'h-[90px]'
+            isScrolled ? 'h-[58px]' : 'h-[72px]'
           }`}>
             {/* Logo */}
             <a
@@ -87,13 +87,15 @@ export default function Navbar() {
               className="flex flex-shrink-0 items-center justify-center gap-2 group"
               aria-label="Kembali ke beranda"
             >
-              <svg className="w-8 h-8 text-nias-orange" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <circle cx="12" cy="12" r="10" strokeWidth="1.5" strokeDasharray="4 2" />
-                <path d="M12 2v4M12 18v4M2 12h4M18 12h4M8 8l8 8M16 8l-8 8" strokeWidth="1.5" />
-                <circle cx="12" cy="12" r="2" fill="currentColor" />
-              </svg>
+              <img
+                src="/logo.svg"
+                alt="Nias Logo"
+                className={`w-auto object-contain transition-all duration-500 ${
+                  isScrolled ? 'h-7' : 'h-8'
+                }`}
+              />
               <span className="font-display font-bold text-2xl tracking-wide text-nias-dark group-hover:text-nias-orange transition-colors duration-200">
-                triply
+                NIAS
               </span>
             </a>
 

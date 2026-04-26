@@ -51,46 +51,122 @@ const extendedDestinations = [...destinations, ...destinations];
 
 export default function Tourism() {
   const scrollRef = useRef(null);
+  const pauseAutoUntilRef = useRef(0);
+
+  const pauseAutoScroll = (duration = 4500) => {
+    pauseAutoUntilRef.current = Date.now() + duration;
+  };
+
+  const scrollByCard = (direction) => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    const card = scrollContainer.querySelector('article');
+    if (!card) return;
+
+    const styles = getComputedStyle(scrollContainer);
+    const gap = parseFloat(styles.gap || '0');
+    const step = card.getBoundingClientRect().width + gap;
+    const halfWidth = scrollContainer.scrollWidth / 2;
+
+    pauseAutoScroll();
+
+    if (direction < 0 && scrollContainer.scrollLeft <= step * 0.6) {
+      scrollContainer.scrollLeft += halfWidth;
+    }
+    if (direction > 0 && scrollContainer.scrollLeft >= halfWidth - step * 0.6) {
+      scrollContainer.scrollLeft -= halfWidth;
+    }
+
+    scrollContainer.scrollBy({
+      left: step * direction,
+      behavior: 'smooth',
+    });
+  };
 
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
+    scrollContainer.scrollLeft = 1;
 
     let animationFrameId;
-    let isHovered = false;
+    let isDragging = false;
+    let dragStartX = 0;
+    let dragStartScrollLeft = 0;
 
-    // Smooth auto-scroll function
-    const scrollStep = () => {
-      if (!isHovered) {
-        scrollContainer.scrollLeft += 1;
-
-        // If we've scrolled halfway (the length of the original list), seamlessly reset to start
-        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth / 2) {
-          scrollContainer.scrollLeft = 0;
-        }
+    const normalizeScroll = () => {
+      const halfWidth = scrollContainer.scrollWidth / 2;
+      if (scrollContainer.scrollLeft >= halfWidth) {
+        scrollContainer.scrollLeft -= halfWidth;
       }
+    };
+
+    const scrollStep = () => {
+      const shouldAutoScroll =
+        !isDragging &&
+        Date.now() > pauseAutoUntilRef.current;
+
+      if (shouldAutoScroll) {
+        scrollContainer.scrollLeft += 1.2;
+        normalizeScroll();
+      }
+
       animationFrameId = requestAnimationFrame(scrollStep);
     };
 
     animationFrameId = requestAnimationFrame(scrollStep);
 
-    // Pause on interaction
-    const handleMouseEnter = () => (isHovered = true);
-    const handleMouseLeave = () => (isHovered = false);
+    const handleTouchStart = () => pauseAutoScroll(5500);
+    const handleTouchEnd = () => pauseAutoScroll(2500);
+    const handleScroll = () => normalizeScroll();
 
-    scrollContainer.addEventListener('mouseenter', handleMouseEnter);
-    scrollContainer.addEventListener('mouseleave', handleMouseLeave);
-    scrollContainer.addEventListener('touchstart', handleMouseEnter, { passive: true });
-    scrollContainer.addEventListener('touchend', handleMouseLeave);
+    const handlePointerDown = (event) => {
+      if (event.pointerType !== 'mouse') return;
+      isDragging = true;
+      dragStartX = event.clientX;
+      dragStartScrollLeft = scrollContainer.scrollLeft;
+      pauseAutoScroll(6000);
+      scrollContainer.classList.add('cursor-grabbing');
+      scrollContainer.style.scrollBehavior = 'auto';
+    };
+
+    const handlePointerMove = (event) => {
+      if (!isDragging) return;
+      const deltaX = event.clientX - dragStartX;
+      scrollContainer.scrollLeft = dragStartScrollLeft - deltaX;
+      normalizeScroll();
+    };
+
+    const handlePointerUp = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      scrollContainer.classList.remove('cursor-grabbing');
+      scrollContainer.style.scrollBehavior = '';
+    };
+
+    const handlePointerCancel = () => {
+      isDragging = false;
+      scrollContainer.classList.remove('cursor-grabbing');
+      scrollContainer.style.scrollBehavior = '';
+    };
+
+    scrollContainer.addEventListener('touchstart', handleTouchStart, { passive: true });
+    scrollContainer.addEventListener('touchend', handleTouchEnd);
+    scrollContainer.addEventListener('pointerdown', handlePointerDown);
+    scrollContainer.addEventListener('pointercancel', handlePointerCancel);
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
-      if (scrollContainer) {
-        scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
-        scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
-        scrollContainer.removeEventListener('touchstart', handleMouseEnter);
-        scrollContainer.removeEventListener('touchend', handleMouseLeave);
-      }
+      scrollContainer.removeEventListener('touchstart', handleTouchStart);
+      scrollContainer.removeEventListener('touchend', handleTouchEnd);
+      scrollContainer.removeEventListener('pointerdown', handlePointerDown);
+      scrollContainer.removeEventListener('pointercancel', handlePointerCancel);
+      scrollContainer.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerup', handlePointerUp);
     };
   }, []);
 
@@ -126,9 +202,35 @@ export default function Tourism() {
 
       {/* Horizontal scroll strip */}
       <div className="relative">
+        <div className="absolute inset-y-0 left-0 z-20 hidden md:flex items-center pl-4 lg:pl-6">
+          <button
+            type="button"
+            onClick={() => scrollByCard(-1)}
+            className="h-11 w-11 rounded-full bg-white/90 text-nias-navy shadow-lg shadow-black/10 border border-white/80 backdrop-blur hover:bg-white hover:text-nias-orange transition-colors"
+            aria-label="Geser wisata ke kiri"
+          >
+            <svg className="mx-auto h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="absolute inset-y-0 right-0 z-20 hidden md:flex items-center pr-4 lg:pr-6">
+          <button
+            type="button"
+            onClick={() => scrollByCard(1)}
+            className="h-11 w-11 rounded-full bg-white/90 text-nias-navy shadow-lg shadow-black/10 border border-white/80 backdrop-blur hover:bg-white hover:text-nias-orange transition-colors"
+            aria-label="Geser wisata ke kanan"
+          >
+            <svg className="mx-auto h-5 w-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+
         <div 
           ref={scrollRef}
-          className="snap-scroll-x flex gap-4 md:gap-6 px-4 sm:px-6 lg:px-[calc((100vw-80rem)/2+2rem)] pb-4 overflow-x-auto hide-scrollbar"
+          className="flex gap-4 md:gap-6 px-4 sm:px-6 lg:px-[calc((100vw-80rem)/2+2rem)] pb-4 overflow-x-auto hide-scrollbar cursor-grab select-none"
         >
           {extendedDestinations.map((dest, i) => (
             <motion.article

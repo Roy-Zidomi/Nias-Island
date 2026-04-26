@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="900" viewBox="0 0 1200 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo segitiga transparan">
+  <title>Logo segitiga transparan</title>
+  <desc>Logo geometris segitiga warna terracotta orange dengan background transparan.</desc>
+
+  <g fill="none" stroke="#DF7A49" stroke-width="52" stroke-linejoin="miter" stroke-linecap="butt">
+    <!-- Outer triangle -->
+    <path d="M600 98 L1040 815 H160 Z"/>
+
+    <!-- Inner triangle -->
+    <path d="M600 245 L820 630 H380 Z"/>
+
+    <!-- Lower geometric line details -->
+    <path d="M285 720 H515 L600 765 L685 720 H915"/>
+    <path d="M236 795 H964"/>
+  </g>
+</svg>

@@ -13,6 +13,7 @@ const navLinks = [
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeLink, setActiveLink] = useState('#beranda');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,8 +32,36 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    const sections = navLinks
+      .map((link) => document.querySelector(link.href))
+      .filter(Boolean);
+
+    if (!sections.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const activeEntry = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (activeEntry?.target?.id) {
+          setActiveLink(`#${activeEntry.target.id}`);
+        }
+      },
+      {
+        rootMargin: '-35% 0px -55% 0px',
+        threshold: [0.2, 0.4, 0.6],
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   const handleNavClick = (e, href) => {
     e.preventDefault();
+    setActiveLink(href);
     setMobileOpen(false);
     const el = document.querySelector(href);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -75,47 +104,35 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className="relative font-sans text-sm font-semibold text-nias-dark hover:text-nias-orange transition-colors duration-200 flex items-center gap-1 group"
+                  className={`relative pb-2 font-sans text-sm font-semibold transition-colors duration-300 ${
+                    activeLink === link.href
+                      ? 'text-nias-orange'
+                      : 'text-nias-dark hover:text-nias-orange'
+                  }`}
                 >
                   {link.label}
-                  <div className="w-[3px] h-[3px] bg-nias-orange rounded-full opacity-0 group-hover:opacity-100 mt-[8px]"></div>
+                  {activeLink === link.href && (
+                    <motion.span
+                      layoutId="desktop-nav-indicator"
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                      className="absolute left-0 right-0 -bottom-[2px] h-[3px] rounded-full bg-gradient-to-r from-nias-orange to-nias-gold shadow-[0_0_14px_rgba(223,122,73,0.45)]"
+                    />
+                  )}
                 </a>
               ))}
             </div>
 
-            {/* Right Side: Phone & Icons */}
-            <div className="flex items-center gap-6 md:gap-8 ml-auto">
-              <div className="hidden md:flex items-center gap-2">
-                <svg className="w-4 h-4 text-nias-orange" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                  <rect x="5" y="3" width="2" height="2" />
-                  <rect x="5" y="7" width="2" height="2" />
-                  <rect x="9" y="3" width="2" height="2" />
-                </svg>
-                <a href="tel:+628113335578" className="font-sans font-bold text-[15px] text-nias-dark hover:text-nias-orange transition-colors">
-                  1800 - 333 5578
-                </a>
-              </div>
-
-              <div className="flex items-center gap-4 text-nias-dark">
-                {/* User Icon */}
-                <button aria-label="User account" className="hover:text-nias-orange transition-colors">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                </button>
-                {/* Menu Hamburger */}
-                <button 
-                  aria-label="Open menu" 
-                  className="hover:text-nias-orange transition-colors"
-                  onClick={() => setMobileOpen(!mobileOpen)}
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </button>
-              </div>
-            </div>
+            {/* Mobile Hamburger */}
+            <button
+              aria-label="Open menu"
+              aria-expanded={mobileOpen}
+              className="text-nias-dark hover:text-nias-orange transition-colors lg:hidden"
+              onClick={() => setMobileOpen(!mobileOpen)}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
           </div>
         </div>
       </header>
@@ -150,7 +167,11 @@ export default function Navbar() {
                     initial={{ opacity: 0, x: 30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + i * 0.05 }}
-                    className="font-sans text-xl font-bold text-nias-dark hover:text-nias-orange transition-colors duration-300"
+                    className={`font-sans text-xl font-bold transition-all duration-300 ${
+                      activeLink === link.href
+                        ? 'text-nias-orange border-l-2 border-nias-orange pl-3 bg-nias-orange/5 rounded-r-md'
+                        : 'text-nias-dark hover:text-nias-orange'
+                    }`}
                   >
                     {link.label}
                   </motion.a>

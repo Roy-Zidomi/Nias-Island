@@ -80,7 +80,13 @@ export default function About() {
           >
             {/* Card 1 — large back */}
             <div className="absolute top-0 right-0 w-[75%] h-[65%] rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/10">
-              <div className="w-full h-full bg-gradient-to-br from-[#0D4F6E] via-[#1A8FA0]/60 to-[#0D4F6E]/80" />
+              <img
+                src="/pantaisorake.jpg"
+                alt="Pantai Sorake"
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
                 <span className="font-sans text-xs text-white/80 tracking-wider uppercase">Pantai Sorake</span>
@@ -90,7 +96,13 @@ export default function About() {
 
             {/* Card 2 — medium middle */}
             <div className="absolute top-[30%] left-0 w-[60%] h-[50%] rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/10 z-10">
-              <div className="w-full h-full bg-gradient-to-br from-[#2D5016] via-[#4A7C2F]/70 to-[#1A2E22]" />
+              <img
+                src="/Desa Bawömataluo.webp"
+                alt="Desa Bawömataluo"
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
                 <span className="font-sans text-xs text-white/80 tracking-wider uppercase">Desa Bawömataluo</span>
@@ -100,7 +112,13 @@ export default function About() {
 
             {/* Card 3 — small front */}
             <div className="absolute bottom-0 right-[5%] w-[50%] h-[40%] rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/10 z-20">
-              <div className="w-full h-full bg-gradient-to-br from-[#E8B84B]/80 via-[#C4A882] to-[#E8B84B]/60" />
+              <img
+                src="/taritradisional.webp"
+                alt="Tari Tradisional"
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               <div className="absolute bottom-4 left-4 right-4">
                 <span className="font-sans text-xs text-white/90 tracking-wider uppercase">Tari Tradisional</span>

@@ -3,9 +3,18 @@ import { motion } from 'framer-motion';
 
 const destinations = [
   {
+    name: 'Pulau Tello',
+    tag: 'Island',
+    tagColor: 'bg-nias-wave/20 text-nias-wave',
+    image: '/PulauTELLO.jpg',
+    description: 'Pulau Tello di Nias Selatan adalah surga tersembunyi yang menawarkan keindahan alam asri, eksotis, dan tenang',
+    gradient: 'from-nias-ocean via-nias-wave/70 to-nias-ocean/90',
+  },
+  {
     name: 'Pantai Sorake',
     tag: 'Surfing',
     tagColor: 'bg-nias-wave/20 text-nias-wave',
+    image: '/ombaksorake.jpg',
     description: 'Ombak legendaris setinggi 8 meter yang menarik peselancar dari seluruh dunia. Salah satu right-hand break terbaik di planet ini.',
     gradient: 'from-nias-ocean via-nias-wave/70 to-nias-ocean/90',
   },
@@ -13,6 +22,7 @@ const destinations = [
     name: 'Pantai Lagundri',
     tag: 'Surfing',
     tagColor: 'bg-nias-wave/20 text-nias-wave',
+    image: '/lagundripantai.png',
     description: 'Teluk yang tenang di sebelah Sorake, sempurna untuk peselancar pemula dan penikmat pantai berpasir putih.',
     gradient: 'from-nias-wave/80 via-nias-ocean to-nias-forest/70',
   },
@@ -20,6 +30,7 @@ const destinations = [
     name: 'Desa Bawömataluo',
     tag: 'Budaya',
     tagColor: 'bg-nias-gold/20 text-nias-gold',
+    image: '/Bawomataluo.jpg',
     description: 'Desa megalitik terbesar di Nias Selatan. Rumah-rumah adat berusia ratusan tahun berdiri megah di atas bukit.',
     gradient: 'from-nias-moss via-nias-palm/70 to-nias-forest',
   },
@@ -27,6 +38,7 @@ const destinations = [
     name: 'Pulau-Pulau Hinako',
     tag: 'Alam',
     tagColor: 'bg-nias-palm/20 text-nias-palm',
+    image: '/kepulauanhinako.jpg',
     description: 'Gugusan pulau kecil dengan terumbu karang pristine. Surga snorkeling dan diving yang masih tersembunyi.',
     gradient: 'from-nias-ocean/80 via-nias-wave to-nias-palm/50',
   },
@@ -34,6 +46,7 @@ const destinations = [
     name: 'Teluk Dalam',
     tag: 'Budaya',
     tagColor: 'bg-nias-gold/20 text-nias-gold',
+    image: '/telukdalam.jpg',
     description: 'Pusat kebudayaan Nias Selatan. Gerbang menuju desa-desa adat dan tradisi megalitik yang masih lestari.',
     gradient: 'from-nias-forest via-nias-moss/70 to-nias-ocean/60',
   },
@@ -41,6 +54,7 @@ const destinations = [
     name: 'Gunung Sitoli',
     tag: 'Kota',
     tagColor: 'bg-nias-sand/20 text-nias-sand',
+    image: '/gunungsitoli.jpg',
     description: 'Ibu kota Kabupaten Nias. Kota pelabuhan yang menjadi titik awal petualangan menjelajahi seluruh pulau.',
     gradient: 'from-nias-night via-nias-forest to-nias-moss/80',
   },
@@ -243,6 +257,15 @@ export default function Tourism() {
             >
               {/* Gradient background */}
               <div className={`absolute inset-0 bg-gradient-to-br ${dest.gradient}`} />
+              {dest.image && (
+                <img
+                  src={dest.image}
+                  alt={dest.name}
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              )}
 
               {/* Subtle pattern */}
               <div className="absolute inset-0 opacity-10"

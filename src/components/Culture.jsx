@@ -2,23 +2,23 @@ import { motion } from 'framer-motion';
 
 const cultures = [
   {
-    icon: '🗿',
     title: 'Hombo Batu',
     subtitle: 'Lompat Batu',
+    image: '/lompatbatunias.jpg',
     description:
       'Tradisi lompat batu setinggi 2 meter yang menjadi simbol kedewasaan pemuda Nias. Ritual kuno ini menguji keberanian, kekuatan, dan kesiapan seorang pemuda untuk menjadi pejuang sejati desa.',
   },
   {
-    icon: '💃',
     title: 'Tari Faluaya',
     subtitle: 'Tarian Perang',
+    image: '/upacaraadatnias.jpg',
     description:
       'Tarian perang tradisional yang menggambarkan keberanian dan kekuatan prajurit Nias. Setiap gerakan menyimbolkan strategi pertempuran dan semangat juang yang tak tergoyahkan dari Ono Niha.',
   },
   {
-    icon: '🏛️',
     title: 'Omo Niha',
     subtitle: 'Rumah Adat',
+    image: '/rumahadatnias.JPG',
     description:
       'Arsitektur tradisional megah yang dibangun tanpa paku — hanya pasak kayu. Rumah adat ini bertahan dari gempa karena struktur panggungnya yang fleksibel, sebuah kejeniusan teknik nenek moyang.',
   },
@@ -77,11 +77,16 @@ export default function Culture() {
               viewport={{ once: true, margin: '-60px' }}
               className="group relative bg-white border border-gray-100 shadow-xl shadow-gray-100/50 rounded-2xl p-8 hover:-translate-y-2 transition-all duration-300 cursor-default"
             >
-              {/* Icon */}
-              <div className="w-16 h-16 rounded-xl bg-orange-50/50 border border-nias-orange/20 flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform duration-300 text-nias-orange">
-                {item.icon}
+              <div className="relative -mx-8 -mt-8 mb-6 h-48 overflow-hidden rounded-t-2xl">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/5 to-transparent" />
               </div>
-
               {/* Content */}
               <h3 className="font-display text-2xl font-bold text-nias-navy mb-1 relative inline-block">
                 {item.title}

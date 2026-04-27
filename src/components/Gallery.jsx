@@ -2,16 +2,28 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const galleryItems = [
-  { id: 1, title: 'Ombak Sorake', location: 'Nias Selatan', gradient: 'from-nias-ocean via-nias-wave to-nias-ocean/80', span: 'md:col-span-2 md:row-span-2' },
-  { id: 2, title: 'Desa Bawömataluo', location: 'Nias Selatan', gradient: 'from-nias-moss via-nias-palm to-nias-forest', span: '' },
-  { id: 3, title: 'Upacara Adat', location: 'Teluk Dalam', gradient: 'from-nias-gold/80 via-nias-sand to-nias-gold/60', span: '' },
-  { id: 4, title: 'Hutan Tropis', location: 'Nias Barat', gradient: 'from-nias-forest via-nias-moss to-nias-palm/80', span: '' },
-  { id: 5, title: 'Pantai Lagundri', location: 'Nias Selatan', gradient: 'from-nias-wave via-nias-ocean to-nias-wave/70', span: 'md:row-span-2' },
+  { id: 1, title: 'Ombak Sorake', location: 'Nias Selatan', image: '/ombaksorake.jpg', gradient: 'from-nias-ocean via-nias-wave to-nias-ocean/80', span: 'md:col-span-2 md:row-span-2' },
+  { id: 2, title: 'Pulau Tello', location: 'Nias Selatan', image: '/PulauTELLO.jpg', gradient: 'from-nias-moss via-nias-palm to-nias-forest', span: '' },
+  { id: 3, title: 'Upacara Adat', location: 'Teluk Dalam', image: '/upacaraadatnias.jpg', gradient: 'from-nias-gold/80 via-nias-sand to-nias-gold/60', span: '' },
+  { id: 4, title: 'Pantai Tureloto', location: 'Nias Utara', image: '/pantaitureleto.webp', gradient: 'from-nias-forest via-nias-moss to-nias-palm/80', span: '' },
+  { id: 5, title: 'Pantai Lagundri', location: 'Nias Selatan', image: '/lagundripantai.png', gradient: 'from-nias-wave via-nias-ocean to-nias-wave/70', span: 'md:row-span-2' },
   { id: 6, title: 'Lompat Batu', location: 'Bawömataluo', gradient: 'from-nias-sand via-nias-gold/60 to-nias-sand/80', span: '' },
-  { id: 7, title: 'Rumah Adat', location: 'Desa Hilinawalo', gradient: 'from-nias-palm via-nias-moss to-nias-ocean/50', span: '' },
-  { id: 8, title: 'Kepulauan Hinako', location: 'Nias Barat', gradient: 'from-nias-ocean via-nias-wave/60 to-nias-palm/40', span: 'md:col-span-2' },
-  { id: 9, title: 'Sunset Nias', location: 'Pantai Sorake', gradient: 'from-nias-gold via-nias-sand/80 to-nias-ocean/60', span: '' },
+  { id: 7, title: 'Rumah Adat', location: 'Desa Hilinawalo', image: '/rumahadatnias.JPG', gradient: 'from-nias-palm via-nias-moss to-nias-ocean/50', span: '' },
+  { id: 8, title: 'Kepulauan Hinako', location: 'Nias Barat', image: '/kepulauanhinako.jpg', gradient: 'from-nias-ocean via-nias-wave/60 to-nias-palm/40', span: 'md:col-span-2' },
+  { id: 9, title: 'Desa Bawömataluo', location: 'Nias Selatan', gradient: 'from-nias-gold via-nias-sand/80 to-nias-ocean/60', span: '' },
 ];
+
+const galleryImages = {
+  1: '/ombaksorake.jpg',
+  2: '/PulauTELLO.jpg',
+  3: '/upacaraadatnias.jpg',
+  4: '/pantaitureleto.webp',
+  5: '/lagundripantai.png',
+  6: '/lompatbatunias.jpg',
+  7: '/rumahadatnias.JPG',
+  8: '/kepulauanhinako.jpg',
+  9: '/Bawomataluo.jpg',
+};
 
 export default function Gallery() {
   const [selected, setSelected] = useState(null);
@@ -59,6 +71,13 @@ export default function Gallery() {
               aria-label={`Lihat ${item.title}`}
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} transition-transform duration-700 group-hover:scale-105`} />
+              <img
+                src={item.image || galleryImages[item.id]}
+                alt={item.title}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
 
               {/* Pattern texture */}
               <div className="absolute inset-0 opacity-10"
@@ -108,6 +127,11 @@ export default function Gallery() {
               onClick={(e) => e.stopPropagation()}
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${selected.gradient}`} />
+              <img
+                src={selected.image || galleryImages[selected.id]}
+                alt={selected.title}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
 
               {/* Pattern */}
               <div className="absolute inset-0 opacity-10"

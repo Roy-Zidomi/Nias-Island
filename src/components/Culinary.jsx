@@ -4,6 +4,7 @@ const foods = [
   {
     name: 'Hambae Nititi',
     category: 'Hidangan Utama',
+    image: '/hambaenititi.webp',
     description:
       'Ikan segar yang dibumbui dengan rempah khas Nias — kunyit, lengkuas, dan cabai — lalu dipanggang di atas arang kelapa. Aroma rempah yang menyatu dengan asap memberikan cita rasa yang tak terlupakan.',
     ingredients: ['Ikan Segar', 'Kunyit', 'Lengkuas', 'Cabai Nias'],
@@ -13,6 +14,7 @@ const foods = [
   {
     name: 'Gowi Nifufu',
     category: 'Makanan Pokok',
+    image: '/Gowinifufu.jpg',
     description:
       'Talas yang ditumbuk halus hingga menjadi adonan kenyal, disajikan dengan kuah daging babi atau ikan. Makanan pokok yang menjadi identitas kuliner masyarakat Ono Niha sejak berabad-abad.',
     ingredients: ['Talas', 'Kelapa Parut', 'Garam Laut', 'Rempah Lokal'],
@@ -20,17 +22,19 @@ const foods = [
     accentClass: 'text-nias-sand',
   },
   {
-    name: 'Babi Guling Nias',
+    name: 'Babae',
     category: 'Hidangan Istimewa',
+    image: '/Babae.webp',
     description:
-      'Babi utuh yang dipanggang perlahan di atas api kayu selama berjam-jam. Kulitnya renyah keemasan, dagingnya lembut dan berair. Hidangan sakral yang selalu hadir dalam setiap pesta adat besar.',
-    ingredients: ['Babi Lokal', 'Bumbu Tradisional', 'Kayu Bakar', 'Daun Pisang'],
+      'Sup krim legendaris khas Nias Selatan berbahan kacang putih yang ditumbuk halus. Teksturnya lembut dan gurih, melambangkan ketulusan dan penghormatan tinggi kepada tamu dalam pesta adat.',
+    ingredients: ['Kacang Putih (Harita Fakhe)', 'Santan Kental', 'Telur Ayam Kampung', 'Kunyit'],
     gradient: 'from-nias-moss/20 via-nias-palm/15 to-nias-forest/10',
     accentClass: 'text-nias-palm',
   },
   {
     name: 'Tuak Nias',
     category: 'Minuman Tradisional',
+    image: '/tuaknias.jpg',
     description:
       'Minuman fermentasi dari sadapan pohon enau yang telah menjadi bagian tak terpisahkan dari kehidupan sosial dan ritual adat Nias. Rasanya manis alamiah dengan sedikit sentuhan asam.',
     ingredients: ['Nira Enau', 'Fermentasi Alami', 'Ragi Tradisional'],
@@ -88,8 +92,20 @@ export default function Culinary() {
                 <div
                   className={`relative h-56 sm:h-64 md:h-72 rounded-2xl overflow-hidden bg-gradient-to-br ${food.gradient} border border-white/50 group`}
                 >
+                  {food.image && (
+                    <img
+                      src={food.image}
+                      alt={food.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                  )}
+                  {food.image && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-transparent" />
+                  )}
                   {/* Pattern texture */}
-                  <div className="absolute inset-0 opacity-20"
+                  <div className={`absolute inset-0 ${food.image ? 'opacity-10' : 'opacity-20'}`}
                     style={{
                       backgroundImage: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 1px, transparent 1px)`,
                       backgroundSize: '24px 24px',
